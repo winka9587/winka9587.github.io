@@ -1,5 +1,5 @@
 ---
-title: This is a new article
+title: This is a new article cn
 date: 2024-04-10 09:12
 category: tmp Category
 author: User
