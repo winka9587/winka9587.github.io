@@ -66,4 +66,32 @@ A: 是的, 需要重新include并link之前的依赖信息。
 
 ### 构建 & 链接
 
+
+# 对find_library的误解
+
+起因: 之前写下了这么一段
+
+~~~
+    find_library(${module}_LIB NAMES moduleX PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib NO_DEFAULT_PATH)
+    target_link_libraries(TARGET_LIBRARIES INTERFACE ${${module}_LIB})
+~~~
+
+首先：直接使用find_library只会返回一个库的路径
+
+其次, ${module}_LIB只是一个变量的名字, ${${module}_LIB}只是返回了该变量对应的路径。
+
+但是为什么上面的代码可以正常工作？是因为target_link_libraries接受路径作为输入。
+
+正常的工作流程应该是：
+~~~
+    find_library(Basic_LIB NAMES Basic PATHS ${SHARED_LIB} NO_DEFAULT_PATH)
+    if(Basic_LIB)
+        add_library(Basic SHARED IMPORTED)
+        set_target_properties(Basic PROPERTIES IMPORTED_LOCATION ${Basic_LIB})
+        set(LIB_TYPE INTERFACE)
+    else()
+        message(FATAL_ERROR "Prebuilt library Basic not found")
+    endif()
+~~~
+
 # 调用.so的成功与失败
