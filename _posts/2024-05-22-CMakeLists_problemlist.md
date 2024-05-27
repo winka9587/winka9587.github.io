@@ -94,4 +94,8 @@ A: 是的, 需要重新include并link之前的依赖信息。
     endif()
 ~~~
 
+# link_directories与target_link_directories
+
+
+
 # 调用.so的成功与失败
