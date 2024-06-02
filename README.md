@@ -1,5 +1,5 @@
-[github page](https://winka9587.github.io/)
+**[>> Github Page](https://winka9587.github.io/)**
 
-[theme wiki](https://github.com/cotes2020/jekyll-theme-chirpy/wiki)
+**[>> Theme Wiki](https://github.com/cotes2020/jekyll-theme-chirpy/wiki)**
 
-[theme github repo](https://github.com/winka9587/winka9587.github.io)
+**[>> Theme Github Repo](https://github.com/winka9587/winka9587.github.io)**
