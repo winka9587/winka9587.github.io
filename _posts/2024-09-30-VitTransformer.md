@@ -18,6 +18,8 @@ MASt3r是如何应用ViT的，如果要拓展到其他工作, 应该如何使用
 
 ![](/assets/img/2024-09-30-15-37-06.png)
 
+![](/assets/img/vit.gif)
+
 ## 输入
 
 ViT是由逐像素、2×2patch + self-attn发展演变而来的, 其初衷是为了匹配CNN。
