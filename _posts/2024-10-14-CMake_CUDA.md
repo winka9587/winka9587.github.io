@@ -1,5 +1,5 @@
 ---
-title: FindCUDA
+title: 不使用FindCUDA传递cuda路径
 date: 2024-10-14 20:31
 category: Net
 author: User
@@ -22,7 +22,15 @@ math: true
 
 ![](/assets/img/2024-10-14-20-36-05.png)
 
-因此使用set(CMAKE_CUDA_ARCHITECTURES 89)
+因此使用
+
+~~~
+set(CMAKE_CUDA_ARCHITECTURES 89)
+~~~
+
+---
+
+## No CMAKE_CUDA_COMPILER could be found.
 
 ~~~
 CMake Error at AREngine/Rendering/CMakeLists.txt:11 (enable_language):
@@ -32,6 +40,8 @@ CMake Error at AREngine/Rendering/CMakeLists.txt:11 (enable_language):
   variable "CUDACXX" or the CMake cache entry CMAKE_CUDA_COMPILER to the full
   path to the compiler, or to the compiler name if it is in the PATH.
 ~~~
+
+提示设置CUDACXX环境变量, 或者cmake变量CMAKE_CUDA_COMPILER来指定nvcc路径.
 
 但是即便设置CUDACXX为which nvcc的路径也无济于事, 后来终于发现了[答案](https://stackoverflow.com/questions/68950463/cmake-cuda-compiler-flag-is-false-despite-cuda-being-found):
 
@@ -43,7 +53,9 @@ CMake Error at AREngine/Rendering/CMakeLists.txt:11 (enable_language):
 
 检查我当前的nvcc版本为11.8, gcc版本为12.3, 确实超过了最高的支持版本(11).
 
-使用后依然没有解决
+使用后遇到了另一个问题, 导致CMAKE_CUDA_COMPILER依然无法找到
+
+关于**sudo权限对环境变量的影响** 可以跳转到最后
 
 发现编译时不使用sudo权限即可正常找到CUDAToolkit
 
@@ -80,3 +92,31 @@ include中CUDA_INCLUDE_DIRS要替换为${CUDAToolkit_INCLUDE_DIRS}
 https://docs.nvidia.com/deploy/cuda-compatibility/
 
 ![](/assets/img/2024-10-14-22-20-59.png)
+
+一般来说, undefined reference问题都是link出了问题
+
+这里是没有link CUDA runtime, 也就是 CUDA:cudart
+
+但是CUDA::cudart并不在toolkit中, 而是需要find_library(CUDA_DRIVER_LIBRARY cuda) *[注意是library而非package]*
+
+## sudo权限对编译的影响
+
+为什么root权限会影响编译？其实很好理解, 还是安全原因。sudo(**S**uper **U**ser **Do**)命令其实就是以另一个用户的身份来执行一条命令（类似于switch user, su xxx来切换到xxx用户），临时获取管理员权限。
+
+既然是临时提升权限，那么原有用户的环境变量就不可能完全继承，不然无法保证安全。因此，有些用户的环境变量就会被过滤掉。
+
+有意思的是：如果想使用 sudo echo $PATH来测试: 
+
+~~~
+echo $PATH
+sudo echo $PATH
+~~~
+
+那么很遗憾, 两条命令的输出结果是一样的。这是因为，PATH变量依然是在当前shell中解析的, 而非在sudo环境中解析的。sudo只是运行了echo命令，PATH在运行echo之前就被解析并传入了。
+
+如果想测试，可以使用下面的命令
+
+~~~
+env | grep PATH
+sudo env | grep PATH
+~~~
