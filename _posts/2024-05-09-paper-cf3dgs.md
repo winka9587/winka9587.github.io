@@ -1,5 +1,5 @@
 ---
-title: [读论文]A Construct-Optimize Approach to Sparse View Synthesis without Camera Pose
+title: 论文阅读-A Construct-Optimize Approach to Sparse View Synthesis without Camera Pose
 date: 2024-05-2 15:37
 category: paper_read
 author: winka9587

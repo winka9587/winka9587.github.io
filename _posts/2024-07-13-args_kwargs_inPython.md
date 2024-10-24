@@ -1,12 +1,14 @@
 ---
 layout: post
-title: *args & **kwargs in Python
+title: Python中的\*args 和 \*\*kwargs
 date: 2024-07-13 15:23
 category: python, research tool
 author: 
 tags: []
 summary: 
 ---
+
+\*args 和 \*\*kwargs
 
 ~~~
 def test_func(arg1, arg2, **kwargs):
