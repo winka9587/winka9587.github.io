@@ -2,7 +2,7 @@
 title: 不使用FindCUDA传递cuda路径
 date: 2024-10-14 20:31
 category: Net
-author: User
+author: winka9587
 tags: [Net]
 summary: Summary of the article ViT in MASt3r
 math: true

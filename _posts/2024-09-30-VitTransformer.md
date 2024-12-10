@@ -2,7 +2,7 @@
 title: VitT in MASt3r
 date: 2024-09-30 10:51
 category: Net
-author: User
+author: winka9587
 tags: [Net]
 summary: Summary of the article ViT in MASt3r
 math: true
