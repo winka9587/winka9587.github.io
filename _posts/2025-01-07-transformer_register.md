@@ -1,5 +1,5 @@
 ---
-title: 论文阅读: VISION TRANSFORMERS NEED REGISTERS
+title: 论文阅读-VISION TRANSFORMERS NEED REGISTERS
 date: 2025-01-07 16:31
 category: transformer
 author: winka9587
