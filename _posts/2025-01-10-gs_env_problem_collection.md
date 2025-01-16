@@ -119,4 +119,12 @@ depthmaps: list, [(w1*h1, 3), ...]
 confs: list, [(w1, h1, 3), ...]
 ~~~
 
-可以根据
+---
+
+应该在保存阶段, sparse_ga.py的optimize_loop, 在优化阶段获取pts3d, 在此处添加xys与points_3d
+
+不
+
+弄错了, 核心在SparseGA的get_dense_pts3d函数上, 因为点云是在这里被合成并拼接为一个的。
+
+也不对, 像xys这种数据确实需要在optimize_loop中预先获得(因为来自原始像素点坐标), 但是point3D_ids最好是等pts过滤后再进行生成，这样能够保证得到的点都是有映射的。
