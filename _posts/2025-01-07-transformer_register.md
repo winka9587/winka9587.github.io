@@ -1,9 +1,9 @@
 ---
-title: 论文阅读-VISION TRANSFORMERS NEED REGISTERS
+title: :construction:施工中-论文阅读-VISION TRANSFORMERS NEED REGISTERS
 date: 2025-01-07 16:31
 category: transformer
 author: winka9587
-tags: [transformer]
+tags: [transformer, 施工中]
 summary: Summary of the article
 math: true
 ---
