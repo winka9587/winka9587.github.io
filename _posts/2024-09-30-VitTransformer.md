@@ -10,6 +10,8 @@ math: true
 
 [toc]
 
+之前已经学习过了transformer, 现在更进一步，其在图形学领域的应用大名鼎鼎的ViT
+
 MASt3r是如何应用ViT的，如果要拓展到其他工作, 应该如何使用它。
 
 参考论文: An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
