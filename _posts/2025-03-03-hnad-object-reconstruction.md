@@ -182,29 +182,6 @@ iHOI, DiffHOI, NeRF-baselines
 
 ---
 
-### (SIGGRAPH Asia 2022) Reconstructing Hand-Held Objects from Monocular Video [[page](https://sites.google.com/view/handheld-obj-recon)]
-
-> _Di Huang, Hang Zhao, Andrew Owens, David Fouhey_<br>
-> _University of Michigan, Google Research_
-
-![](/assets/img/2025-03-03-10-35-10.png)
-
-该方法基于单目视频，通过时间序列优化重建手持物体。
-
-#### Metrics
-
-测试的指标包括: 形状重建精度 (Chamfer Distance, CD), 视角合成质量 (PSNR, SSIM, LPIPS)
-
-#### 数据集
-
-DexYCB, HO3D
-
-#### 对比方法
-
-ObMan, iHOI, Video-based methods
-
----
-
 ### (CVPR 2022) Collaborative Learning for Hand and Object Reconstruction with Attention-Guided Graph Convolution [[page](https://github.com/tsehoeldentse/hand-object-reconstruction)]
 
 > _Tze Ho Elden Tse, Zhimin Chen, Antonio Garcia-Uceda, Gregory Rogez, Edmond Boyer, Helge Rhodin_<br>
