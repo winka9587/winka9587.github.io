@@ -141,7 +141,6 @@ Xiaoming Deng1,2* Hongan Wang1,2∗_<br>
 > _Yufei Ye, Shubham Tulsiani, Abhinav Gupta_<br>
 > _Carnegie Mellon University_
 
-![](/assets/img/2025-03-03-10-25-42.png)
 
 该方法利用手部姿态作为条件约束，从单帧 RGB 图像中重建物体。
 
@@ -164,7 +163,6 @@ ObMan, iHOI, SDF-based methods
 > _Wentian Qu, Jiarui Xu, Animesh Garg_<br>
 > _University of Toronto_
 
-![](/assets/img/2025-03-03-10-30-15.png)
 
 HO-NeRF 使用 NeRF 进行新视角合成，并优化手部和物体的位姿。
 
@@ -186,8 +184,6 @@ iHOI, DiffHOI, NeRF-baselines
 
 > _Tze Ho Elden Tse, Zhimin Chen, Antonio Garcia-Uceda, Gregory Rogez, Edmond Boyer, Helge Rhodin_<br>
 > _INRIA, University of British Columbia_
-
-![](/assets/img/2025-03-03-10-40-20.png)
 
 该方法利用注意力引导的图神经网络进行手部和物体的联合重建。
 
