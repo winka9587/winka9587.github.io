@@ -199,3 +199,24 @@ HO3D, DexYCB
 
 ObMan, iHOI, Graph-based methods
 
+---
+
+
+## 其他的相关工作
+
+### (WACV 2025) DN-Splatter: Depth and Normal Priors for Gaussian Splatting and Meshing [[page](https://maturk.github.io/dn-splatter/)]
+
+引入深度和法向先验来得到更好的3dgs与meshing
+
+![](/assets/img/2025-03-08-15-50-14.png)
+
+
+### (CVPR 2025) https://github.com/facebookresearch/fast3r [[page](https://github.com/facebookresearch/fast3r)]
+
+![](/assets/img/2025-03-08-16-28-22.png)
+
+添加了全局fusion来加速原本的匹配过程。
+
+### (arXiv 2024) [Spann3R] 3D Reconstruction with Spatial Memory [[page](https://hengyiwang.github.io/projects/spanner)]
+
+![](/assets/img/2025-03-08-17-18-15.png)
