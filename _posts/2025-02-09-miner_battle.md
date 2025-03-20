@@ -296,3 +296,18 @@ sudo apt reinstall coreutils e2fsprogs findutils procps
 ~~~
 
 至此结束
+
+---
+
+更新:
+
+nvidia-smi命令被创建了alias映射到其他命令，gpustat和nvidia-smi输出的结果不一样。
+
+~~~
+type -a nvidia-smi
+nvidia-smi is aliased to `cat ~/.config/nvidia_smi_backup/nvidia-smi.log'
+nvidia-smi is /usr/bin/nvidia-smi
+nvidia-smi is /bin/nvidia-smi
+~~~
+
+创建时间是上一次攻击的时间...
