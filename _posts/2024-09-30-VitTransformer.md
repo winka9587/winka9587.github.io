@@ -53,3 +53,12 @@ self.num_patches = self.grid_size[0] * self.grid_size[1]
 这个类还附带一个proj, 是一个nn.Conv2d, 输入维度为in_chans=3, 输出维度为embed_dim=1024, kernel_size=patch_size, 步长stride=patch_size. 所以这个proj其实就是对图像进行embed的操作。
 
 norm则是一个归一化层, 负责对proj输出的结果进行归一化。如果初始化时指定了norm_layer则使用该layer, 如果没有指定则使用nn.Identity, 原样返回输入。
+
+### embedding
+
+很多ViT的视线都会在输入阶段做一个小型的卷积或者线性投影来实现**图像到token的转换(所谓的patch embedding)**, 例如LRM论文的framework中, 原始RGB图像经过Conv转换为token, 一般来说这个卷积/线性投影会被认为是ViT的一部分，但是也有论文像LRM一样会在绘制framework时将其与image encoder分开表述，了解这一点即可。
+
+![](/assets/img/![](/assets/img/2025-04-03-15-49-41.png).png)
+
+<p style="text-align: center;">LRM: LARGE RECONSTRUCTION MODEL FOR SINGLE IMAGE TO 3D</p>
+
