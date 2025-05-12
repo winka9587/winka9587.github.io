@@ -41,6 +41,8 @@ https://blog.csdn.net/weixin_43693967/article/details/130753155
 
 # 2024.1.31 
 
+**该解决方案仅为按时间顺序的记录，彻底解决请参考最后2章节**
+
 大过年突然发现他卷土重来，显卡占用率均100%拉满。
 
 找到其启动位置
@@ -311,3 +313,65 @@ nvidia-smi is /bin/nvidia-smi
 ~~~
 
 创建时间是上一次攻击的时间...
+
+## 2025.5.12 更新
+
+挖矿程序已经不再出现了，以为这事情已经告一段落。结果中午突然有其他组同学告知我，我管理的服务器IP一直在爆破他们的服务器...
+
+先检查root
+
+~~~
+ps -U root
+~~~
+
+发现其正在与一台服务器建立ssh连接
+
+~~~
+2065950 ssh xxx@211.87.xxx.xxx       0.0  0.0
+~~~
+
+继续查看该进程的详细指令
+
+~~~
+ps -fp 2065950
+ps -o user,pid,ppid,cmd -p 2065950
+~~~
+
+~~~
+sudo lsof -p 2065950
+COMMAND     PID USER   FD   TYPE    DEVICE SIZE/OFF    NODE NAME
+ssh     2065950 root  cwd    DIR     253,0     4096 3441959 /usr/games/lan
+ssh     2065950 root  rtd    DIR     253,0     4096       2 /
+~~~
+
+很奇怪吧, 计算用的服务器上哪来games/lan, 到对应的目录下, 找到了其暴力破解的同一局域网下的其他服务器的用户名和密码。
+
+当然我可以就此将其删除，但是问题是：**它是哪来的？** 上次以为已经将后门全部清理了，但现在看来，依然还有残留，攻击者依然有方法登入服务器。因为恶意程序的创建时间都是一天前，而对应的创建时间，仅有一个非root用户在线，因此，要么是该用户的登录方式泄露，且攻击者留了提升权限的后门，要么是root用户中保留着其他后门。
+
+~~~
+ ps -p 126850 -o etime,etime,stime,lstart
+    ELAPSED     ELAPSED STIME                  STARTED
+ 1-20:04:32  1-20:04:32 May10 Sat May 10 18:05:38 2025
+~~~
+
+检查定期任务
+
+在/etc/cron.hourly下，又发现了0文件，和上一次的是一样的。
+
+至此，将以上发现的恶意程序全部删除（其又用chattr修改了权限，但这次似乎没有将coreutils替换），然后添加监控。
+
+~~~
+sudo auditctl -w /etc/cron.hourly/ -p wa -k cron_hourly_all
+~~~
+
+检查命令
+
+~~~
+sudo ausearch -k cron_hourly_all
+~~~
+
+---
+
+**等待上钩**
+
+---
