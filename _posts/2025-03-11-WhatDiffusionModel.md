@@ -1,5 +1,5 @@
 ---
-title: diffusion model是如何工作的？
+title: diffusion model是如何工作的
 date: 2025-03-11 14:43
 category: 
 author: 
