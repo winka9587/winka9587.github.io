@@ -5,6 +5,7 @@ category:
 author: winka9587
 tags: [diffusion_model]
 summary: 
+math: true
 ---
 
 本文是对diffusion的入门级学习记录。
