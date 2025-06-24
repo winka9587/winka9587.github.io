@@ -7,7 +7,41 @@ tags: []
 summary: 
 ---
 
+## 可能会用到相关代码
+
+Zhe Cao, Ilija Radosavovic, Angjoo Kanazawa, and Jitendra Malik. Reconstructing hand-object interactions in the wild. In Proceedings of the IEEE/CVF International Conference on Computer Vision, pages 12417–12426, 2021. 2, 4
+Yana Hasson, G ̈ul Varol, Cordelia Schmid, and Ivan Laptev. Towards unconstrained joint hand-object reconstruction from rgb videos. In 2021 International Conference on 3D Vision (3DV), pages 659–668. IEEE, 2021. 4
+
+Hand-held Object Reconstruction from RGB Video with Dynamic Interaction中提到这两个里面有代码，渲染物体为mask。
+> 3.2: Previous works [5, 15] render 2D mask Mrender from the 3D mesh and compare it with the input object mask M for optimization:
+
+
 汇总近几年的相关工作. 
+
+## 重新梳理
+
+如果按prior/template来进行分类, 多数工作假设能够获得交互物体的预扫描模板。这就导致难以泛化（因为实际场景中对每一个物体都扫描是困难的）
+
+而无需先验的方法如果训练数据较少，泛化性能依然不够。[Ye et al.](#diffusion-guided) 在6个物体类别的数据集上进行了训练，并使用该训练的先验来重建hand&object，受到训练数据的限制。
+
+还有一组方法使用单目视频来进行in-hand object scanning, 使用多视角重建技术来整合不同视角下的观察结果。[CVPR23](#in-hand-scanning)， [SIGGRAPH](#Zhou2022)(相机固定不动)，[Color-NeuS](#Color-NeuS). HOLD中提到这些方法不考虑手的关节（因为在输入的单目视频中手并非刚体，无法参与多视角重建环节）
+
+## 论文
+
+### 单目扫描(monocular video scanning)
+
+#### (CVPR 2023) In-hand 3d object scanning from an rgb sequence.{#in-hand-scanning}
+
+#### (SIGGRAPH Asia 2022) Reconstructing hand-held objects from monocular video.{#Zhou2022}
+
+#### (3DV 2024) Color-NeuS: Reconstructing neural implicit surfaces with color. {#Color-Neus}
+
+### template-based recon
+
+#### Diffusion-guided reconstruction of everyday handobject interaction clips.{#diffusion-guided}
+
+
+
 
 ### (CVPR 2024) HOLD: Category-agnostic 3D Reconstruction of Interacting Hands and Objects from Video[[page](https://zc-alexfan.github.io/hold)]
 
@@ -202,7 +236,7 @@ ObMan, iHOI, Graph-based methods
 ---
 
 
-## 其他的相关工作
+## 其他的/或许相关工作
 
 ### (WACV 2025) DN-Splatter: Depth and Normal Priors for Gaussian Splatting and Meshing [[page](https://maturk.github.io/dn-splatter/)]
 
@@ -220,3 +254,4 @@ ObMan, iHOI, Graph-based methods
 ### (arXiv 2024) [Spann3R] 3D Reconstruction with Spatial Memory [[page](https://hengyiwang.github.io/projects/spanner)]
 
 ![](/assets/img/2025-03-08-17-18-15.png)
+
