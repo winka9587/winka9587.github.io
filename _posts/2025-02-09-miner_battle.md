@@ -64,6 +64,61 @@ stat检查，确实是不久之前（root权限）创建的。
 
 于是依然按照上次的操作重新进行了一遍，想等过两天去机房直接重新安装系统。但是修改后的密码测试过，其他机器暴力扫应该是破不了的。很奇怪它是如何获得root权限的。
 
+## colmap错误
+
+~~~
+I20250602 03:47:01.171092 889386 misc.cc:198] 
+==============================================================================
+Exhaustive feature matching
+==============================================================================
+I20250602 03:47:01.181533 889386 feature_matching.cc:231] Matching block [1/1, 1/1]
+I20250602 03:47:01.182898 889386 feature_matching.cc:46]  in 0.001s
+I20250602 03:47:01.183050 889386 timer.cc:91] Elapsed time: 0.000 [minutes]
+I20250602 03:47:01.189850 889579 misc.cc:198] 
+==============================================================================
+Loading database
+==============================================================================
+I20250602 03:47:01.192241 889579 database_cache.cc:54] Loading cameras...
+I20250602 03:47:01.192351 889579 database_cache.cc:64]  9 in 0.000s
+I20250602 03:47:01.192389 889579 database_cache.cc:72] Loading matches...
+I20250602 03:47:01.192426 889579 database_cache.cc:78]  0 in 0.000s
+I20250602 03:47:01.192451 889579 database_cache.cc:94] Loading images...
+I20250602 03:47:01.192559 889579 database_cache.cc:143]  9 in 0.000s (connected 0)
+I20250602 03:47:01.192592 889579 database_cache.cc:154] Building correspondence graph...
+I20250602 03:47:01.192610 889579 database_cache.cc:190]  in 0.000s (ignored 0)
+I20250602 03:47:01.192636 889579 timer.cc:91] Elapsed time: 0.000 [minutes]
+W20250602 03:47:01.192656 889579 incremental_mapper.cc:349] No images with matches found in the database
+Ran RANSAC in 0.0213 sec
+ 67%|██████▋   | 2/3 [00:39<00:19, 19.76s/it]
+Reconstruction done in  1.0085 sec
+{}
+images: 9
+two_view_geometries: 36
+Dataset "ETs" -> Registered 0 / 9 images with 0 clusters
+Inference on cluster 1 with 10 images
+Shortlisting. Number of pairs to match: 45. Done in 1.1754 sec
+SuperPoint: 100%|██████████| 10/10 [00:00<00:00, 12.65it/s]
+Features detected in 1.0524 sec
+  RoMa 10/45 pairs done
+  RoMa 20/45 pairs done
+  RoMa 30/45 pairs done
+  RoMa 40/45 pairs done
+  RoMa 45/45 pairs done
+  NMS  10/10 images merged
+  Pair 10/45 processed
+  Pair 20/45 processed
+  Pair 30/45 processed
+  Pair 40/45 processed
+  Pair 45/45 processed
+
+=== 统计汇总 (mean / median) ===
+KD 命中    : 2048.0 / 2048.0
+最终 Kept  : 1.0 / 1.0
+
+✅ Done. keypoints=10 imgs, matches=45 pairs
+Features matched in 43.0580 sec
+~~~
+
 # 2024.2.5
 
 当以为一切都ok的时候，突然发现它又来了，而且这次如果使用上次的方法，会立刻重新创建一个二进制文件。
