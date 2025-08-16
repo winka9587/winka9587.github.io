@@ -41,6 +41,8 @@ https://blog.csdn.net/weixin_43693967/article/details/130753155
 
 # 2024.1.31 
 
+**该解决方案仅为按时间顺序的记录，彻底解决请参考最后2章节**
+
 大过年突然发现他卷土重来，显卡占用率均100%拉满。
 
 找到其启动位置
@@ -61,6 +63,61 @@ stat检查，确实是不久之前（root权限）创建的。
 ![](/assets/img/2025-02-09-15-40-42.png)
 
 于是依然按照上次的操作重新进行了一遍，想等过两天去机房直接重新安装系统。但是修改后的密码测试过，其他机器暴力扫应该是破不了的。很奇怪它是如何获得root权限的。
+
+## colmap错误
+
+~~~
+I20250602 03:47:01.171092 889386 misc.cc:198] 
+==============================================================================
+Exhaustive feature matching
+==============================================================================
+I20250602 03:47:01.181533 889386 feature_matching.cc:231] Matching block [1/1, 1/1]
+I20250602 03:47:01.182898 889386 feature_matching.cc:46]  in 0.001s
+I20250602 03:47:01.183050 889386 timer.cc:91] Elapsed time: 0.000 [minutes]
+I20250602 03:47:01.189850 889579 misc.cc:198] 
+==============================================================================
+Loading database
+==============================================================================
+I20250602 03:47:01.192241 889579 database_cache.cc:54] Loading cameras...
+I20250602 03:47:01.192351 889579 database_cache.cc:64]  9 in 0.000s
+I20250602 03:47:01.192389 889579 database_cache.cc:72] Loading matches...
+I20250602 03:47:01.192426 889579 database_cache.cc:78]  0 in 0.000s
+I20250602 03:47:01.192451 889579 database_cache.cc:94] Loading images...
+I20250602 03:47:01.192559 889579 database_cache.cc:143]  9 in 0.000s (connected 0)
+I20250602 03:47:01.192592 889579 database_cache.cc:154] Building correspondence graph...
+I20250602 03:47:01.192610 889579 database_cache.cc:190]  in 0.000s (ignored 0)
+I20250602 03:47:01.192636 889579 timer.cc:91] Elapsed time: 0.000 [minutes]
+W20250602 03:47:01.192656 889579 incremental_mapper.cc:349] No images with matches found in the database
+Ran RANSAC in 0.0213 sec
+ 67%|██████▋   | 2/3 [00:39<00:19, 19.76s/it]
+Reconstruction done in  1.0085 sec
+{}
+images: 9
+two_view_geometries: 36
+Dataset "ETs" -> Registered 0 / 9 images with 0 clusters
+Inference on cluster 1 with 10 images
+Shortlisting. Number of pairs to match: 45. Done in 1.1754 sec
+SuperPoint: 100%|██████████| 10/10 [00:00<00:00, 12.65it/s]
+Features detected in 1.0524 sec
+  RoMa 10/45 pairs done
+  RoMa 20/45 pairs done
+  RoMa 30/45 pairs done
+  RoMa 40/45 pairs done
+  RoMa 45/45 pairs done
+  NMS  10/10 images merged
+  Pair 10/45 processed
+  Pair 20/45 processed
+  Pair 30/45 processed
+  Pair 40/45 processed
+  Pair 45/45 processed
+
+=== 统计汇总 (mean / median) ===
+KD 命中    : 2048.0 / 2048.0
+最终 Kept  : 1.0 / 1.0
+
+✅ Done. keypoints=10 imgs, matches=45 pairs
+Features matched in 43.0580 sec
+~~~
 
 # 2024.2.5
 
@@ -311,3 +368,65 @@ nvidia-smi is /bin/nvidia-smi
 ~~~
 
 创建时间是上一次攻击的时间...
+
+## 2025.5.12 更新
+
+挖矿程序已经不再出现了，以为这事情已经告一段落。结果中午突然有其他组同学告知我，我管理的服务器IP一直在爆破他们的服务器...
+
+先检查root
+
+~~~
+ps -U root
+~~~
+
+发现其正在与一台服务器建立ssh连接
+
+~~~
+2065950 ssh xxx@211.87.xxx.xxx       0.0  0.0
+~~~
+
+继续查看该进程的详细指令
+
+~~~
+ps -fp 2065950
+ps -o user,pid,ppid,cmd -p 2065950
+~~~
+
+~~~
+sudo lsof -p 2065950
+COMMAND     PID USER   FD   TYPE    DEVICE SIZE/OFF    NODE NAME
+ssh     2065950 root  cwd    DIR     253,0     4096 3441959 /usr/games/lan
+ssh     2065950 root  rtd    DIR     253,0     4096       2 /
+~~~
+
+很奇怪吧, 计算用的服务器上哪来games/lan, 到对应的目录下, 找到了其暴力破解的同一局域网下的其他服务器的用户名和密码。
+
+当然我可以就此将其删除，但是问题是：**它是哪来的？** 上次以为已经将后门全部清理了，但现在看来，依然还有残留，攻击者依然有方法登入服务器。因为恶意程序的创建时间都是一天前，而对应的创建时间，仅有一个非root用户在线，因此，要么是该用户的登录方式泄露，且攻击者留了提升权限的后门，要么是root用户中保留着其他后门。
+
+~~~
+ ps -p 126850 -o etime,etime,stime,lstart
+    ELAPSED     ELAPSED STIME                  STARTED
+ 1-20:04:32  1-20:04:32 May10 Sat May 10 18:05:38 2025
+~~~
+
+检查定期任务
+
+在/etc/cron.hourly下，又发现了0文件，和上一次的是一样的。
+
+至此，将以上发现的恶意程序全部删除（其又用chattr修改了权限，但这次似乎没有将coreutils替换），然后添加监控。
+
+~~~
+sudo auditctl -w /etc/cron.hourly/ -p wa -k cron_hourly_all
+~~~
+
+检查命令
+
+~~~
+sudo ausearch -k cron_hourly_all
+~~~
+
+---
+
+**等待上钩**
+
+---
