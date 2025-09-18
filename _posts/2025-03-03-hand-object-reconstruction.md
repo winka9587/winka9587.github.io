@@ -7,6 +7,31 @@ tags: []
 summary: 
 ---
 
+## Related Work
+
+### 分类
+
+| Branch | Name | From | Input | Output |
+|--------|------|------|-------|--------|
+| Hand-object 3D recon, object-agnostic | HOSt3R | arXiv 2025 | two RGB image| mask, **pointcloud (hand & obj)**|
+| Hand-held Objects Reconstruction | HORT | arXiv 2025 | single RGB image| mask, **pointcloud(obj), mesh(hand)**|
+| Hand-object 3D recon, category-agnostic | HOLD | CVPR 2024 | RGB images | mesh |
+
+#### HOSt3R
+
+现有的**RGB序列**重建主要是两阶段pipeline: 
+
+1.hand-object 3D tracking
+2.multi-view 3D reconstruction
+
+现有的方法依赖关键点检测技术, SfM和hand-keypoint optimization. 对于不同模型形状、弱纹理和hand-object互遮挡情况难以处理
+
+#### HORT
+
+使用coarse-to-fine策略, 从图像中生成稀疏点云并refine为pixel-aligned image feature. 使用图像特征和3D手几何特征预测物体的点云和相对于手的pose. 
+
+#### HOLD
+
 ## 可能会用到相关代码
 
 Zhe Cao, Ilija Radosavovic, Angjoo Kanazawa, and Jitendra Malik. Reconstructing hand-object interactions in the wild. In Proceedings of the IEEE/CVF International Conference on Computer Vision, pages 12417–12426, 2021. 2, 4

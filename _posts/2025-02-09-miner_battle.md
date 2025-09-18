@@ -367,6 +367,8 @@ nvidia-smi is /usr/bin/nvidia-smi
 nvidia-smi is /bin/nvidia-smi
 ~~~
 
+该alias的设置一般是使用root权限直接加到所有用户的~/.bashrc下的...
+
 创建时间是上一次攻击的时间...
 
 ## 2025.5.12 更新
@@ -430,3 +432,124 @@ sudo ausearch -k cron_hourly_all
 **等待上钩**
 
 ---
+
+## 2025.8.18 更新 没抓到
+
+检查日志结果如下：
+~~~bash 
+sudo journalctl --since "2025-08-12 06:50" --until "2025-08-12 07:10" 
+~~~ 
+
+**在06:54:07：systemd 启动 Daily apt upgrade and clean activities**
+~~~bash
+Aug 12 06:54:07 king systemd[1]: Starting Daily apt upgrade and clean activities...  06:54:37 king systemd-networkd-wait-online[2160053]: Event loop failed: Connection timed out 
+Aug 12 06:54:37 king kernel: NVRM: GPU 0000:39:00.0: RmInitAdapter failed! (0x62:0x40:2393) 
+Aug 12 06:54:37 king kernel: NVRM: GPU 0000:39:00.0: rm_init_adapter failed, device minor number 2 
+Aug 12 06:54:39 king kernel: NVRM: GPU 0000:39:00.0: RmInitAdapter failed! (0x62:0x40:2393) 
+Aug 12 06:54:39 king kernel: NVRM: GPU 0000:39:00.0: rm_init_adapter failed, device minor number 2 
+Aug 12 06:54:39 king kernel: NVRM: GPU 0000:39:00.0: RmInitAdapter failed! (0x62:0x40:2393) 
+Aug 12 06:54:39 king kernel: NVRM: GPU 0000:39:00.0: rm_init_adapter failed, device minor number 2 
+Aug 12 06:54:41 king kernel: NVRM: GPU 0000:39:00.0: RmInitAdapter failed! (0x62:0x40:2393) 
+Aug 12 06:54:41 king kernel: NVRM: GPU 0000:39:00.0: rm_init_adapter failed, device minor number 2 
+Aug 12 06:54:41 king kernel: NVRM: GPU 0000:39:00.0: RmInitAdapter failed! (0x62:0x40:2393) 
+Aug 12 06:54:41 king kernel: NVRM: GPU 0000:39:00.0: rm_init_adapter failed, device minor number 2 
+Aug 12 06:54:41 king audit[2153877]: ANOM_ABEND auid=1016 uid=1016 gid=1016 ses=4543 pid=2153877 comm="node" exe="/home/zpp/.vscode-server/cli/servers/Stable-cb0c47c0cfaad0757385834bd89d410c78a856c0/server/node" sig=6 res=1 
+Aug 12 06:55:01 king audit[2161070]: USER_ACCT pid=2161070 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:accounting grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success' 
+Aug 12 06:55:01 king audit[2161070]: CRED_ACQ pid=2161070 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:setcred grantors=pam_permit,pam_cap acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success' 
+Aug 12 06:55:01 king audit[2161070]: SYSCALL arch=c000003e syscall=1 success=yes exit=1 a0=7 a1=7ffe0108d210 a2=1 a3=7f32217d6371 items=0 ppid=2381 pid=2161070 auid=0 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=587> 
+Aug 12 06:55:01 king audit: PROCTITLE proctitle=2F7573722F7362696E2F43524F4E002D66 
+Aug 12 06:55:01 king CRON[2161070]: pam_unix(cron:session): session opened for user root by (uid=0) 
+Aug 12 06:55:01 king audit[2161070]: USER_START pid=2161070 uid=0 auid=0 ses=5871 msg='op=PAM:session_open grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? term> 
+Aug 12 06:55:01 king CRON[2161071]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1) 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' resumed (module 'builtin:omfile') [v8.2001.0 try https://www.rsyslog.com/e/2359 ] 
+Aug 12 06:55:01 king audit[2161070]: CRED_DISP pid=2161070 uid=0 auid=0 ses=5871 msg='op=PAM:setcred grantors=pam_permit acct="root" exe="/usr/sbin/cron" hostname=? addr=? terminal=cron res=success' 
+Aug 12 06:55:01 king audit[2161070]: USER_END pid=2161070 uid=0 auid=0 ses=5871 msg='op=PAM:session_close grantors=pam_loginuid,pam_env,pam_env,pam_permit,pam_umask,pam_unix,pam_limits acct="root" exe="/usr/sbin/cron" hostname=? addr=? termi> 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), retry 0. There should be messages before this one giving the reason for suspension. [v8.2001.0 try https://www.rsyslog.com/e/2007 ] 
+Aug 12 06:55:01 king rsyslogd[2157]: action 'action-2-builtin:omfile' suspended (module 'builtin:omfile'), next retry is Tue 
+Aug 12 06:55:31 2025, retry nbr 0. There should be messages before this one giving the reason for suspension. [v8.20> 
+Aug 12 06:55:01 king CRON[2161070]: pam_unix(cron:session): session closed for user root 
+~~~
+
+**06:55:17：在该服务运行窗口内，审计日志记录到/etc/cron.hourly/0相关的内容**
+~~~
+Aug 12 06:55:17 king audit[2161431]: SYSCALL arch=c000003e syscall=257 success=yes exit=4 a0=ffffff9c a1=562c591b32c0 a2=242 a3=1b6 items=2 ppid=2161184 pid=2161431 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=> 
+Aug 12 06:55:17 king audit: CWD cwd="/var/backups" 
+Aug 12 06:55:17 king audit: PATH item=0 name="/etc/cron.hourly/" inode=1310745 dev=fd:00 mode=040755 ouid=0 ogid=0 rdev=00:00 nametype=PARENT cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0 
+Aug 12 06:55:17 king audit: PATH item=1 name="/etc/cron.hourly/0" inode=1315595 dev=fd:00 mode=0100644 ouid=0 ogid=0 rdev=00:00 nametype=CREATE cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0 
+Aug 12 06:55:17 king audit: PROCTITLE proctitle=6C73002D7274002F7661722F63616368652F6170742F61726368697665732F2F2A2E646562 
+Aug 12 06:55:17 king audit[2161431]: SYSCALL arch=c000003e syscall=257 success=yes exit=5 a0=ffffff9c a1=562c591b34c0 a2=242 a3=1b6 items=2 ppid=2161184 pid=2161431 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=> 
+Aug 12 06:55:17 king audit: CWD cwd="/var/backups" 
+Aug 12 06:55:17 king audit: PATH item=0 name="/etc/cron.hourly/" inode=1310745 dev=fd:00 mode=040755 ouid=0 ogid=0 rdev=00:00 nametype=PARENT cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0 
+Aug 12 06:55:17 king audit: PATH item=1 name="/etc/cron.hourly/0" inode=1315595 dev=fd:00 mode=0100644 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0 
+Aug 12 06:55:17 king audit: PROCTITLE proctitle=6C73002D7274002F7661722F63616368652F6170742F61726368697665732F2F2A2E646562 
+Aug 12 06:55:17 king audit[2161431]: SYSCALL arch=c000003e syscall=91 success=yes exit=0 a0=5 a1=bff a2=0 a3=1b6 items=1 ppid=2161184 pid=2161431 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=42949672> 
+Aug 12 06:55:17 king audit: PATH item=0 name=(null) inode=1315595 dev=fd:00 mode=0100644 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0 
+Aug 12 06:55:17 king audit: PROCTITLE proctitle=6C73002D7274002F7661722F63616368652F6170742F61726368697665732F2F2A2E646562 
+~~~
+
+**创建动作与apt每日升级流程同步完成**
+
+~~~
+Aug 12 06:55:17 king systemd[1]: apt-daily-upgrade.service: Succeeded. 
+Aug 12 06:55:17 king systemd[1]: Finished Daily apt upgrade and clean activities. 
+Aug 12 06:55:17 king audit[1]: SERVICE_START pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=apt-daily-upgrade comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success' 
+Aug 12 06:55:17 king audit[1]: SERVICE_STOP pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=apt-daily-upgrade comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+~~~
+
+检查
+
+~~~bash
+> systemctl cat apt-daily-upgrade.service
+# /lib/systemd/system/apt-daily-upgrade.service
+[Unit]
+Description=Daily apt upgrade and clean activities
+Documentation=man:apt(8)
+ConditionACPower=true
+After=apt-daily.service network.target network-online.target systemd-networkd.service NetworkManager.service connman.service
+
+[Service]
+Type=oneshot
+ExecStartPre=-/usr/lib/apt/apt-helper wait-online
+ExecStart=/usr/lib/apt/apt.systemd.daily install
+KillMode=process
+TimeoutStopSec=900
+~~~
+
+其中apt-daily-upgrade.service是正常的每日apt升级和清理
+
+
+测试了手动启动apt-daily-upgrade.service并不会导致/etc/cron.hourly/0的创建
+
+没抓到，继续等待
+
+~~~base
+# 已创建的监控规则
+sudo auditctl -l
+-w /etc/cron.hourly/0 -p rwxa -k cron0_watch
+-w /etc/system -p rwxa -k system_watch
+~~~
+
+
+~~~
+sudo ausearch -k cron0_watch --format text
+
+sudo ausearch -k system_watch --format text
+~~~
