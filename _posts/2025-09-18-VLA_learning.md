@@ -7,7 +7,7 @@ tags: []
 summary: just make a record
 ---
 
-记录自己从0入门VLA
+记录自己从0入门VLA(Vision-Language-Action)
 
 **只是记录而非教程**
 
