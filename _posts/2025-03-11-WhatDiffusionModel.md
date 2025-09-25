@@ -16,6 +16,8 @@ math: true
 
 [How diffusion models work: the math from scratch](https://theaisummer.com/diffusion-models)
 
+[apxml](https://apxml.com/zh/courses/intro-diffusion-models/chapter-1-generative-modeling-fundamentals/probabilistic-framework-intro)
+
 GaussianObject: High-Quality 3D Object Reconstruction from Four Views with Gaussian Splatting
 
 ## base idea of diffusion model
@@ -45,6 +47,18 @@ $$
 因此完全可以说: **从$x_t$采样得到$x_{t-1}$**
 
 $x_{t-1} \sim \mathcal{N}(\mu_\theta(x_t, t), \sigma^2_tI)$
+
+**Q: 网络估计什么？**
+
+多数DDPM方法的输出是一个与$x_t$形状相同的张量，用来表示当前步的去噪方向，等价参数化的方法有很多种，这里先说一下预测噪声的。
+
+网络估计噪声$\hat\epsilon=\epsilon_\theta(x_t, t)$
+
+$$
+\mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}}(x_t - \frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\hat\epsilon)
+$$
+
+其中的$\alpha_t, \beta_t, \bar\alpha_t$都是噪声调度参数。
 
 ## forward
 
@@ -88,6 +102,10 @@ $$
 $$
 
 $q(x_t|x_{t-1})$依然是一个正态分布，从输入的$x_0$一直到$x_T$, 只需要连乘就能得到最终的分布
+
+最终的分布$x_T$服从标准正态分布（从标准正态分布中的采样），是纯粹的噪声。
+
+$$x_T \sim \mathcal{N}(0, I)$$
 
 ### Reparameterization (重参数化)
 

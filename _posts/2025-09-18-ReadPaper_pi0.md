@@ -125,3 +125,4 @@ a variant of diffusion.
 
 $\pi_0$模型在PaliGemma VLM的基础上训练，使用data mixture对其进行进一步训练。 添加了flow matching来获得action outputs.
 
+## 
