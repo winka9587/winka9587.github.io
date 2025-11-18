@@ -120,6 +120,16 @@ git@github.com: Permission denied (publickey).
 ssh-add ~/.ssh/{自定义名字}
 ~~~
 
+如果报错
+> 
+> Could not open a connection to your authentication agent.
+> 
+
+运行 ssh-agent
+~~~
+eval "$(ssh-agent -s)"
+~~~
+
 成功, 输出如下:
 ~~~
 ssh -T git@github.com             
@@ -155,4 +165,139 @@ https://huggingface.co/docs/huggingface_hub/en/guides/cli#huggingface-cli-login
 ![](/assets/img/2024-11-20-16-08-13.png)
 输入token后一段时间超时，挂梯子解决。
 
-#### s
+#### hf cli安装
+
+~~~
+pip install -U huggingface_hub
+hf version
+~~~
+
+~~~
+huggingface-cli login
+~~~
+
+创建token时记得授权。
+
+#### 批量传输文件
+
+相比于scp, 支持检查跳过已经完成的文件
+
+~~~
+rsync -avz --ignore-existing -e ssh user@remote:/path/to/source/ /path/to/destination/
+~~~
+
+-a：归档模式（保留权限、时间戳等）。
+-v：显示详细输出。
+-z：压缩传输。
+
+
+#### gsutil安装
+
+~~~
+sudo apt update
+sudo apt install snapd
+sudo snap install google-cloud-cli --classic
+
+cho 'export PATH=$PATH:/snap/bin' >> ~/.bashrc
+source ~/.bashrc
+~~~
+
+### docker相关
+
+#### docker代理
+
+docker启动后, 使用export设置和修改代理无法覆盖守护进程的代理，即http-proxy.conf中的优先级更高且不受影响。
+
+~~~
+# 首次安装docker没有则创建
+# sudo mkdir -p /etc/systemd/system/docker.service.d
+
+# 编辑现有代理
+sudo nano /etc/systemd/system/docker.service.d/http-proxy.conf
+~~~
+
+按以下设置代理
+~~~
+[Service]
+Environment="HTTP_PROXY=192.168.12.251:<port>"
+Environment="HTTPS_PROXY=192.168.12.251:<port>"
+Environment="NO_PROXY=localhost,127.0.0.1,::1"
+~~~
+
+推荐使用：
+~~~
+'cat >/etc/systemd/system/docker.service.d/http-proxy.conf <<EOF
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:7897"
+Environment="HTTPS_PROXY=http://127.0.0.1:7897"
+Environment="NO_PROXY=localhost,127.0.0.1,::1"
+EOF'
+~~~
+
+重启docker
+~~~
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+~~~
+
+检查
+~~~
+sudo systemctl show docker --property=Environment
+~~~
+
+
+#### 问题
+
+~~~
+$ docker compose -f scripts/docker/H200.yml up --build
+[+] Building 86.7s (4/4) FINISHED                                                                                                                                                                                            
+ => [internal] load local bake definitions                                                                                                                                                                              0.0s
+ => => reading from stdin 567B                                                                                                                                                                                          0.0s
+ => [internal] load build definition from serve_policy_H200.Dockerfile                                                                                                                                                  0.0s
+ => => transferring dockerfile: 2.15kB                                                                                                                                                                                  0.0s
+ => [internal] load metadata for ghcr.io/astral-sh/uv:0.5.1                                                                                                                                                             0.0s
+ => ERROR [internal] load metadata for docker.io/nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04@sha256:2fcc4280646484290cc50dce5e65f388dd04352b07cbe89a635703bd1f9aedb6                                                  86.6s
+------
+ > [internal] load metadata for docker.io/nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04@sha256:2fcc4280646484290cc50dce5e65f388dd04352b07cbe89a635703bd1f9aedb6:
+------
+serve_policy_H200.Dockerfile:12
+
+--------------------
+
+  10 |     # FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04@sha256:2d913b09e6be8387e1a10976933642c73c840c0b735f0bf3c28d97fc9bc422e0
+
+  11 |     # serach from https://hub.docker.com/r/nvidia/cuda/tags
+
+  12 | >>> FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04@sha256:2fcc4280646484290cc50dce5e65f388dd04352b07cbe89a635703bd1f9aedb6
+
+  13 |     COPY --from=ghcr.io/astral-sh/uv:0.5.1 /uv /uvx /bin/
+
+  14 |     
+
+--------------------
+
+failed to solve: nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04@sha256:2fcc4280646484290cc50dce5e65f388dd04352b07cbe89a635703bd1f9aedb6: failed to resolve source metadata for docker.io/nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04@sha256:2fcc4280646484290cc50dce5e65f388dd04352b07cbe89a635703bd1f9aedb6: unexpected status from HEAD request to https://1764161021507418.mirror.aliyuncs.com/v2/nvidia/cuda/manifests/sha256:2fcc4280646484290cc50dce5e65f388dd04352b07cbe89a635703bd1f9aedb6?ns=docker.io: 403 Forbidden
+~~~
+
+~~~
+$ docker pull nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+12.4.1-cudnn-runtime-ubuntu22.04: Pulling from nvidia/cuda
+Get "https://registry-1.docker.io/v2/nvidia/cuda/manifests/sha256:0bb88834d973ca1b450fcc2a05333c6fe45510bee289912a5391274c351c4a4d": EOF
+$ # 备份
+sudo cp -a /etc/docker/daemon.json /etc/docker/daemon.json.bak.$(date +%s) 2>/dev/null || true
+
+用公开镜像源
+sudo tee /etc/docker/daemon.json >/dev/null <<'EOF'
+{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://dockerpull.com",
+    "https://hub-mirror.c.163.com"
+  ]
+}
+EOF
+
+应用并重启
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+~~~
