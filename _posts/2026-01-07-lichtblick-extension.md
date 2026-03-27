@@ -76,3 +76,9 @@ npm run local-install　# 直接安装, 重启lichtblick即可
 
 要实现对主要结构的修改，添加新的功能，需要参考API：https://lichtblick-suite.github.io/docs/docs/extensions/extension-api/introduction/
 
+## Lerobot split
+
+为了加速数据集的生成
+
+修改自: lerobot:0cf864870cf29f4738d3ade893e6fd13fbd7cdb5
+

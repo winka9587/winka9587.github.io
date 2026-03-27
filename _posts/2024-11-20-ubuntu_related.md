@@ -183,6 +183,15 @@ huggingface-cli login
  Smudge error: Error downloading libero_10_no_noops/1.0.0/liber_o10-train.tfrecord-00000-of-00032 (40e014ad56148f3268fc19299f311265a16373186f22304293304a0911331af3): batch response: Authentication required: Password authentication in git is no longer supported. You must use a user access token or an SSH key instead. See https://huggingface.co/blog/password-git-deprecation
 ~~~
 
+新版本
+
+~~~
+# 到对应目录下并激活环境
+git lfs install
+pip install -U "huggingface_hub[cli]"
+hf auth login
+~~~
+
 #### 批量传输文件
 
 相比于scp, 支持检查跳过已经完成的文件
